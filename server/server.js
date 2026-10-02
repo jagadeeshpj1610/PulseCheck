@@ -2,6 +2,7 @@ const express = require('express')
 const cors = require('cors')
 const config = require('./config/index.js')
 const { testConnection } = require('./config/dbConnection.js')
+const authRoutes = require('./routes/authRoutes.js')
 
 
 const app = express()
@@ -32,5 +33,7 @@ app.get('/health', async (req, res) => {
         res.status(503).json({ status: "error", database: "not connected", message: "backend server is running but database is not connected" })
     }
 })
+
+app.use('/auth/', authRoutes)
 
 start()
