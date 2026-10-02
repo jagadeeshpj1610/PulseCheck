@@ -2,7 +2,7 @@
 
 PulseCheck is an API monitoring platform that tracks the uptime and response time of your APIs and alerts you when they go down.
 
-> **Status:** Sprint 1 in progress. Only the project foundation is in place (frontend, backend, database connection).
+> **Status:** Sprint 1 in progress. Day 2 : User can able to Register/signUp using his/her details.
 
 ## Tech Stack
 
