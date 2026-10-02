@@ -16,10 +16,10 @@ const register = async (req, res) => {
         })
 
     } catch (error) {
-        if (error.statusCode) {
-            return res.status(error.statusCode).json({
+        if (error.code === '23505') {
+            return res.status(409).json({
                 success: false,
-                message: error.message
+                message: 'Email already registered'
             })
         }
         console.error('Register failed:', error.message)
