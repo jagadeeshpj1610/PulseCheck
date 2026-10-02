@@ -1,12 +1,13 @@
 
 const { registerUser } = require('../services/authService')
+const brcypt = require('bcryptjs')
 
 
 const register = async (req, res) => {
     try {
         const { name, email, password } = req.body;
-
-        const user = await registerUser(name, email, password);
+        const hashPassword = await brcypt.hash(password, 10)
+        const user = await registerUser(name, email, hashPassword);
 
         return res.status(200).json({
             success: true,
@@ -16,8 +17,8 @@ const register = async (req, res) => {
 
     } catch (error) {
         return res.status(400).json({
-            success : false,
-            message : error.message
+            success: false,
+            message: error.message
         })
     }
 }
