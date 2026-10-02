@@ -2,7 +2,7 @@
 
 PulseCheck is an API monitoring platform that tracks the uptime and response time of your APIs and alerts you when they go down.
 
-> **Status:** Sprint 1 in progress. Only the project foundation is in place (frontend, backend, database connection).
+> **Status:** Sprint 1 in progress. Day 2 : User can able to Register/signUp using his/her details.
 
 ## Tech Stack
 
@@ -30,6 +30,13 @@ Open `psql` and run:
 
 ```sql
 CREATE DATABASE pulsecheck;
+```
+
+### 2. Set up the database
+
+```bash
+psql -U postgres -c "CREATE DATABASE pulsecheck;"
+psql -U postgres -d pulsecheck -f server/db/001_create_users_table.sql
 ```
 
 ### 3. Run the backend
@@ -88,16 +95,16 @@ PulseCheck/
     ├── config/      Environment config and database connection
     └── server.js    App entry point
 ```
-
-## Health Check
-
-`GET /health` returns the server and database status.
-
-| Status | Meaning |
-|---|---|
-| `200` | Server and database are up |
-| `503` | Database is unavailable |
-
+```
+server/
+├── config/        Env config and DB connection
+├── controllers/
+├── db/            SQL migrations
+├── routes/
+├── services/
+├── validators/
+└── server.js
+```
 ## Scripts
 
 | Location | Command | Purpose |
