@@ -9,18 +9,26 @@ const register = async (req, res) => {
         const hashPassword = await brcypt.hash(password, 10)
         const user = await registerUser(name, email, hashPassword);
 
-        return res.status(200).json({
+        return res.status(201).json({
             success: true,
             message: "User registered Sucessfully",
             data: user
         })
 
     } catch (error) {
-        return res.status(400).json({
+        if (error.statusCode) {
+            return res.status(error.statusCode).json({
+                success: false,
+                message: error.message
+            })
+        }
+        console.error('Register failed:', error.message)
+        return res.status(500).json({
             success: false,
-            message: error.message
+            message: 'Something went wrong'
         })
     }
+
 }
 
 module.exports = { register }

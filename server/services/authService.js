@@ -6,7 +6,9 @@ const registerUser = async (name, email, password_hash) => {
         'SELECT id FROM users WHERE email = $1', [email]
     )
     if (existingUser.rows.length > 0) {
-        throw new Error('Email already registered')
+        const err = new Error('Email already registered')
+        err.statusCode = 409
+        throw err
     }
 
     const result = await pool.query(
