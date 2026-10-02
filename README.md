@@ -32,6 +32,13 @@ Open `psql` and run:
 CREATE DATABASE pulsecheck;
 ```
 
+### 2. Set up the database
+
+```bash
+psql -U postgres -c "CREATE DATABASE pulsecheck;"
+psql -U postgres -d pulsecheck -f server/db/001_create_users_table.sql
+```
+
 ### 3. Run the backend
 
 ```bash
@@ -88,16 +95,16 @@ PulseCheck/
     ├── config/      Environment config and database connection
     └── server.js    App entry point
 ```
-
-## Health Check
-
-`GET /health` returns the server and database status.
-
-| Status | Meaning |
-|---|---|
-| `200` | Server and database are up |
-| `503` | Database is unavailable |
-
+```
+server/
+├── config/        Env config and DB connection
+├── controllers/
+├── db/            SQL migrations
+├── routes/
+├── services/
+├── validators/
+└── server.js
+```
 ## Scripts
 
 | Location | Command | Purpose |
