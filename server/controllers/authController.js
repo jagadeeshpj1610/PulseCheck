@@ -1,13 +1,12 @@
 
 const { registerUser } = require('../services/authService')
-const brcypt = require('bcryptjs')
 
 
 const register = async (req, res) => {
     try {
         const { name, email, password } = req.body;
-        const hashPassword = await brcypt.hash(password, 10)
-        const user = await registerUser(name, email, hashPassword);
+        const normalizedEmail = email.trim().toLowerCase(), normalizedName = name.trim()
+        const user = await registerUser(normalizedName, normalizedEmail, password);
 
         return res.status(201).json({
             success: true,
@@ -16,10 +15,10 @@ const register = async (req, res) => {
         })
 
     } catch (error) {
-        if (error.code === '23505') {
-            return res.status(409).json({
+        if (error.statusCode) {
+            return res.status(error.statusCode).json({
                 success: false,
-                message: 'Email already registered'
+                message: error.message
             })
         }
         console.error('Register failed:', error.message)
