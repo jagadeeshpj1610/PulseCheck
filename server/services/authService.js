@@ -31,4 +31,53 @@ const registerUser = async (name, email, password) => {
     return result.rows[0]
 }
 
-module.exports = { registerUser }
+
+const loginUser = async (email, password) => {
+    try {
+        const result = await pool.query(
+            `SELECT id, name, email, password_hash, created_at
+             FROM users
+             WHERE email = $1`,
+            [email]
+        );
+
+        if (result.rows.length === 0) {
+            const err = new Error("Invalid email or password");
+            err.statusCode = 401;
+            throw err;
+        }
+
+        const user = result.rows[0];
+
+        const isPasswordValid = await bcrypt.compare(
+            password,
+            user.password_hash
+        );
+
+        if (!isPasswordValid) {
+            const err = new Error("Invalid email or password");
+            err.statusCode = 401;
+            throw err;
+        }
+
+        return {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            created_at: user.created_at
+        };
+
+    } catch (error) {
+        if (error.statusCode) {
+            throw error;
+        }
+
+        console.error("Login service failed:", error.message);
+
+        const err = new Error("Login failed");
+        err.statusCode = 500;
+        throw err;
+    }
+};
+
+module.exports = { registerUser, loginUser }
