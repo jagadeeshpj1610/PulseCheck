@@ -35,11 +35,6 @@ const register = async (req, res) => {
 const login = async (req, res) => {
     try {
         const { email, password } = req.body;
-        if (!email || !password) {
-            console.log("required");
-
-            return res.status(400).json({ success: false, message: "email and password is required" })
-        }
         const user = await loginUser(email, password)
 
         const token = jwt.sign(
