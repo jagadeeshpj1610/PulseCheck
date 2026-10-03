@@ -28,4 +28,23 @@ const validateUserRegister = (req, res, next) => {
     next()
 }
 
-module.exports = { validateUserRegister }
+const validateLoginUser = (req, res, next) => {
+    const { email, password } = req.body || {}
+    const errors = []
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+    if (typeof email !== 'string' || !emailPattern.test(email.trim())) {
+        errors.push('Enter a valid email address')
+    }
+    if (typeof password !== 'string' || password.length === 0 || password.length > 72) {
+        errors.push('Password is required')
+    }
+
+    if (errors.length > 0) {
+        return res.status(400).json({ success: false, message: 'Validation failed', errors })
+    }
+
+    next()
+}
+
+module.exports = { validateUserRegister, validateLoginUser }
