@@ -1,6 +1,6 @@
 
 const { registerUser, loginUser } = require('../services/authService')
-// const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken')
 
 
 const register = async (req, res) => {
@@ -42,9 +42,15 @@ const login = async (req, res) => {
         }
         const user = await loginUser(email, password)
 
+        const token = jwt.sign(
+            { id: user.id },
+            process.env.JWT_SECRET,
+            { expiresIn: process.env.JWT_EXPIRES_IN }
+        );
         return res.status(200).json({
             success: true,
             message: "User Login Succesful",
+            token : token,
             data: user
         })
 
