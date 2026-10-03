@@ -50,7 +50,7 @@ const login = async (req, res) => {
         return res.status(200).json({
             success: true,
             message: "User Login Succesful",
-            token : token,
+            token: token,
             data: user
         })
 
@@ -69,4 +69,21 @@ const login = async (req, res) => {
     }
 }
 
-module.exports = { register, login }
+const getCurrentUser = async (req, res) => {
+    try {
+        return res.status(200).json({
+            success: true,
+            message: "Authenticated user",
+            user: req.user
+        });
+    } catch (error) {
+        console.error("Get current user failed:", error.message);
+
+        return res.status(500).json({
+            success: false,
+            message: "Something went wrong"
+        });
+    }
+};
+
+module.exports = { register, login, getCurrentUser }
