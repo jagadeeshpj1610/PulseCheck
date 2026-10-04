@@ -1,13 +1,17 @@
 import Login from "./pages/Login"
 import Register from "./pages/Register"
+import Dashboard from './pages/Dashboard'
+import { Routes, Route, Navigate } from 'react-router-dom'
 
 const App = () => {
   return (
     <>
-      <h1>PulseCheck</h1>
-      <p>Api Monitoring system</p>
-      <Login />
-      <Register />
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/" element={<Navigate to="/login" replace />} />
+      </Routes>
     </>
   )
 }
