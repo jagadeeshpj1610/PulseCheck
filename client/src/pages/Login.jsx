@@ -28,7 +28,7 @@ const Login = () => {
             <form onSubmit={handleSubmit}>
                 <input type="email" value={email} placeholder="Enter Email" onChange={(e) => setEmail(e.target.value)} />
                 <input type="password" value={password} placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
-                <button type="submit" disabled={submitting ? "Logging in..." : "Login"}>Login</button>
+                <button type="submit" disabled = {submitting} >{submitting ? "Logging in...." : "Login"}</button>
             </form>
             {err && <p>{err}</p>}
         </div>
