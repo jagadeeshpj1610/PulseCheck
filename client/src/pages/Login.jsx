@@ -1,17 +1,36 @@
 import { useState } from "react"
+import { useAuth } from "../context/AuthContext"
 
 const Login = () => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const [err, setErr] = useState("")
+    const [submitting, setSubmitting] = useState(false)
+    const {login} = useAuth()
+
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        setErr("")
+        setSubmitting(true)
+        try {
+            await login(email, password)
+            console.log("logged in");
+        } catch (error) {
+            setErr(error.response?.data?.message || 'Something went wrong')
+        } finally {
+            setSubmitting(false)
+        }
+    } 
 
     return (
         <div>
             <h2>Login to Pulse Check</h2>
-            <form>
-                <input type="text" value={email} placeholder="Enter Email" onChange={(e) => setEmail(e.target.value)} />
+            <form onSubmit={handleSubmit}>
+                <input type="email" value={email} placeholder="Enter Email" onChange={(e) => setEmail(e.target.value)} />
                 <input type="password" value={password} placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
-                <button type="submit">Login</button>
+                <button type="submit" disabled={submitting ? "Logging in..." : "Login"}>Login</button>
             </form>
+            {err && <p>{err}</p>}
         </div>
     )
 }
