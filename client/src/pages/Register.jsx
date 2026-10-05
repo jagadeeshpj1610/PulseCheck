@@ -40,6 +40,7 @@ const Register = () => {
                 <input type="password" value={confirmPassword} placeholder="Enter the confirm password" onChange={(e) => setConfirmPassword(e.target.value)} />
                 <button type="submit" disabled={submitting} >{submitting ? "Registering..." : "Register"}</button>
             </form>
+            <p>Already have an Account? <Link to="/login">Login</Link></p>
             {err && <p>{err}</p>}
             {success && <p>{success}</p>}
         </div>

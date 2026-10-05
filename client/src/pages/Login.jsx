@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { useAuth } from "../context/AuthContext"
 import { replace, useNavigate } from "react-router-dom"
+import { Link } from "react-router-dom"
 
 const Login = () => {
     const [email, setEmail] = useState("")
@@ -34,6 +35,7 @@ const Login = () => {
                 <input type="password" value={password} placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
                 <button type="submit" disabled={submitting} >{submitting ? "Logging in...." : "Login"}</button>
             </form>
+            <p>No Account? <Link to="/register">Register</Link></p>
             {err && <p>{err}</p>}
         </div>
     )
