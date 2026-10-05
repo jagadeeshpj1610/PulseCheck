@@ -37,6 +37,7 @@ CREATE DATABASE pulsecheck;
 ```bash
 psql -U postgres -c "CREATE DATABASE pulsecheck;"
 psql -U postgres -d pulsecheck -f server/db/001_create_users_table.sql
+psql -U postgres -d pulsecheck -f server/db002_create_monitors_table.sql
 ```
 
 ### 3. Run the backend
@@ -112,6 +113,7 @@ Defined in `server/.env` (never commit this file). Use `server/.env.example` as 
 
 ## Project Structure
 
+```
 PulseCheck/
 ├── client/              React frontend (Vite)
 │   └── src/
@@ -128,6 +130,7 @@ PulseCheck/
     ├── services/
     ├── validators/
     └── server.js
+```
     
 ## Scripts
 
