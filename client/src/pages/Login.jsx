@@ -8,12 +8,29 @@ const Login = () => {
     const [password, setPassword] = useState("")
     const [err, setErr] = useState("")
     const [submitting, setSubmitting] = useState(false)
+    const [fieldErrors, setFieldErrors] = useState([])
     const { login } = useAuth()
     const navigate = useNavigate()
+
+    const validation = (errors) => {
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+            errors.push("Enter a valid email address")
+        }
+        if (!password) {
+            errors.push("Password is required")
+        }
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault()
         setErr("")
+        setFieldErrors([])
+        const errors = []
+        validation(errors)
+        if (errors.length > 0) {
+            setFieldErrors(errors)
+            return
+        }
         setSubmitting(true)
         try {
             await login(email, password)
@@ -22,6 +39,7 @@ const Login = () => {
 
         } catch (error) {
             setErr(error.response?.data?.message || 'Something went wrong')
+            setFieldErrors(error.response?.data?.errors || [])
         } finally {
             setSubmitting(false)
         }
@@ -37,6 +55,11 @@ const Login = () => {
             </form>
             <p>No Account? <Link to="/register">Register</Link></p>
             {err && <p>{err}</p>}
+            {fieldErrors.length > 0 && (
+                <ul>
+                    {fieldErrors.map((msg) => <li key={msg}>{msg}</li>)}
+                </ul>
+            )}
         </div>
     )
 }
