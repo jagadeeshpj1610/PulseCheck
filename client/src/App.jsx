@@ -2,6 +2,7 @@ import Login from "./pages/Login"
 import Register from "./pages/Register"
 import Dashboard from './pages/Dashboard'
 import { Routes, Route, Navigate } from 'react-router-dom'
+import ProtectedRoute from "./components/ProtectedRoute"
 
 const App = () => {
   return (
@@ -9,8 +10,8 @@ const App = () => {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/" element={<Navigate to="/login" replace />} />
+        <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+        <Route path="*" element={<Navigate to="/login" replace />}/>
       </Routes>
     </>
   )

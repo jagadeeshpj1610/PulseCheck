@@ -26,7 +26,7 @@ export const AuthProvider = ({children}) => {
             } 
             try {
                 const data = await getCurrentUser()
-                setUser(data.data)
+                setUser(data.user)
             } catch (error) {
                 logout()
             } finally {
