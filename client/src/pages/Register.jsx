@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { registerUser } from "../services/authService";
+import { Link } from "react-router-dom";
 
 const Register = () => {
     const [email, setEmail] = useState("")
@@ -9,25 +10,49 @@ const Register = () => {
     const [err, setErr] = useState("")
     const [success, setSuccess] = useState("")
     const [submitting, setSubmitting] = useState(false)
+    const [fieldErrors, setFieldErrors] = useState([])
+
+    const validation = (errors) => {
+        if (!name.trim() || !email.trim() || !password) {
+            errors.push("All fields are required")
+        }
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+            errors.push("Enter a Valid email address")
+        }
+        if (password !== confirmPassword) {
+            errors.push("Password do not match")
+        }
+        if (password.length < 8 || password.length > 72) {
+            errors.push("Password must be atleast 8 characters")
+        }
+        if (!/[a-z]/.test(password) || !/[A-Z]/.test(password) || !/[0-9]/.test(password)) {
+            errors.push("Password must include uppercase, lowercase and a number")
+        }
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault()
         setErr("")
-        setSubmitting(true)
         setSuccess("")
-        if (password !== confirmPassword) {
-            setErr("password do not match")
-            setSubmitting(false)
+        setFieldErrors([])
+
+        const errors = []
+        validation(errors)
+        if (errors.length > 0) {
+            setFieldErrors(errors)
             return
         }
+
+        setSubmitting(true)
         try {
             await registerUser(name, email, password)
             setSuccess("Account created. You can now log in")
         } catch (error) {
+            console.error(error)
             setErr(error.response?.data?.message || "Something went wrong")
+            setFieldErrors(error.response?.data?.errors || [])
         } finally {
             setSubmitting(false)
-
         }
     }
     return (
@@ -43,6 +68,11 @@ const Register = () => {
             <p>Already have an Account? <Link to="/login">Login</Link></p>
             {err && <p>{err}</p>}
             {success && <p>{success}</p>}
+            {fieldErrors.length > 0 && (
+                <ul>
+                    {fieldErrors.map((msg) => <li key={msg}>{msg}</li>)}
+                </ul>
+            )}
         </div>
     )
 }
