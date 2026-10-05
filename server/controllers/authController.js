@@ -1,5 +1,5 @@
 
-const { registerUser, loginUser } = require('../services/authService')
+const { registerUser, loginUser, getUserById } = require('../services/authService')
 const jwt = require('jsonwebtoken')
 const config = require('../config/index')
 
@@ -68,12 +68,16 @@ const login = async (req, res) => {
 
 const getCurrentUser = async (req, res) => {
     try {
+        const user = await getUserById(req.user.id)
         return res.status(200).json({
             success: true,
             message: "Authenticated user",
-            user: req.user
+            user
         });
     } catch (error) {
+        if (error.statusCode) {
+            return res.status(error.statusCode).json({ success: false, message: error.message })
+        }
         console.error("Get current user failed:", error.message);
 
         return res.status(500).json({
