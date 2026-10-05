@@ -11,16 +11,16 @@ CREATE TABLE
         is_active BOOLEAN NOT NULL DEFAULT TRUE,
         last_checked_at TIMESTAMPTZ,
         created_at TIMESTAMPTZ NOT NULL DEFAULT now (),
-        updated_at TIMESTAMPTZ NOT NULL DEFAULT now ()
-    );
-
-CONSTRAINT monitors_method_check CHECK (
-    method IN ('GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD')
-),
-CONSTRAINT monitors_interval_check CHECK (interval_seconds >= 60),
-CONSTRAINT monitors_timeout_check CHECK (timeout_seconds BETWEEN 1 AND 60),
-CONSTRAINT monitors_status_code_check CHECK (expected_status_code BETWEEN 100 AND 599),
-CONSTRAINT monitors_name_not_blank CHECK (char_length(trim(name)) > 0) CREATE INDEX IF NOT EXISTS monitors_user_id_idx ON monitors (user_id);
+        updated_at TIMESTAMPTZ NOT NULL DEFAULT now (),
+        
+        CONSTRAINT monitors_method_check CHECK (
+            method IN ('GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD')
+        ),
+        CONSTRAINT monitors_interval_check CHECK (interval_seconds >= 60),
+        CONSTRAINT monitors_timeout_check CHECK (timeout_seconds BETWEEN 1 AND 60),
+        CONSTRAINT monitors_status_code_check CHECK (expected_status_code BETWEEN 100 AND 599),
+        CONSTRAINT monitors_name_not_blank CHECK (char_length(trim(name)) > 0)
+);
 
 CREATE INDEX IF NOT EXISTS monitors_user_id_idx ON monitors (user_id);
 
